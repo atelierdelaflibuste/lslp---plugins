@@ -58,6 +58,9 @@ function mod_menu(){
 
 add_action('wp','mod_menu');
 
+require_once('functions.php');
+
+
 
 
 
