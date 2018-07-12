@@ -6,3 +6,4 @@
 *License: GPLv2 or later
 */
 
+require_once('functions.php');
