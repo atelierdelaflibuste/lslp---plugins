@@ -34,7 +34,7 @@ function mod_menu(){
   foreach($pages as $page){
     // var_dump($page->post_title);
     // var_dump($page->ID);
-    echo $page->ID." -> ".$page->post_title."<br>";
+    //echo $page->ID." -> ".$page->post_title."<br>";
     if($page->post_title=="Billetterie") $pageexist=true;
   }
   
