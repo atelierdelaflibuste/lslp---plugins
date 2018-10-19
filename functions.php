@@ -1,4 +1,15 @@
 <?php
+
+function restrictly_get_current_user_role() {//https://catapultthemes.com/get-current-user-role-in-wordpress/
+    if( is_user_logged_in() ) {
+        $user = wp_get_current_user();
+        $role = ( array ) $user->roles;
+        return $role[0];
+    } else {
+        return false;
+    }
+}
+
 add_action('wp_head', 'bootstrap');
 function bootstrap(){
   ?>
