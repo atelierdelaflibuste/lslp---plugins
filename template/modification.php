@@ -17,12 +17,12 @@
     
     <form method="POST">
   <div class="form-group">
-    <label for="resonsable">Nom du responsable</label>
-    <input type="text" name="name" class="form-control" id="responsable">
+    <label for="responsable">Nom du responsable</label>
+    <input type="text" name="name" value="<?php echo $troupe->nom_responsable; ?>" class="form-control" id="responsable">
   </div>
   <div class="form-group">
     <label for="email">Adresse e-mail</label>
-    <input type="email" name="email" class="form-control" id="email" placeholder="name@example.com">
+    <input type="email" name="email" value="<?php echo $troupe->email; ?>"class="form-control" id="email" placeholder="name@example.com">
   </div>
      
   <!--<div class="form-group">
@@ -32,50 +32,50 @@
       
     <div class="row">  
     <div class="form-group col-md-6">
-    <label for="resonsable">Ville</label>
-    <input type="text" name="city" class="form-control" id="responsable">
+    <label for="ville">Ville</label>
+    <input type="text" name="city" value="<?php echo $troupe->ville; ?>" class="form-control" id="ville">
   </div>
   
       <div class="form-group col-md-6">
-    <label for="resonsable">Pays</label>
-    <input type="text" name="country" class="form-control" id="responsable">
+    <label for="pays">Pays</label>
+    <input type="text" name="country" value="<?php echo $troupe->pays; ?>" class="form-control" id="pays">
         </div></div>
         
         
     <div class="row">  
     <div class="form-group col-md-6">
     <label for="jour-arrivee">Jour et heure d'arrivée</label>
-    <input type="text" class="form-control" id="jour-depart">
+    <input type="text" value="<?php echo $troupe->date_arrivee; ?>" class="form-control" id="jour-arrivee">
   </div>
   
       <div class="form-group col-md-6">
     <label for="lieu-arrivee">Lieu d'arrivée</label>
-    <input type="text" class="form-control" id="lieu-arrivee">
+    <input type="text" value="<?php echo $troupe->lieu_arrivee; ?>" class="form-control" id="lieu-arrivee">
         </div></div> 
         
         <div class="row">  
     <div class="form-group col-md-6">
     <label for="jour-depart">Jour et heure de départ</label>
-    <input type="text" class="form-control" id="responsable">
+    <input type="text" value="<?php echo $troupe->date_depart; ?>" class="form-control" id="jour-depart">
   </div>
   
       <div class="form-group col-md-6">
     <label for="lieu-depart">Lieu de départ</label>
-    <input type="text" class="form-control" id="responsable">
+    <input type="text" value="<?php echo $troupe->lieu_depart; ?>" class="form-control" id="lieu-depart">
         </div></div> 
         
                           
           <div class="form-group">
-    <label for="resonsable">Titre de la pièce</label>
-    <input type="text" class="form-control" id="responsable">
+    <label for="titre">Titre de la pièce</label>
+    <input type="text" value="<?php echo $troupe->titre_spectacle; ?>" class="form-control" id="titre">
   </div>   
 
    <div class="form-group">
     <label for="resume">Résumé</label>
-    <textarea class="form-control" id="resume" rows="3"></textarea>
+    <textarea class="form-control" id="resume" rows="3"><?php echo $troupe->resume; ?></textarea>
   </div>                                                   
   
-  <button type="submit" class="btn btn-primary">Envoyer</button>
+  <button type="submit" class="btn btn-primary">Modifier</button>
   
   </form>
       </div>
