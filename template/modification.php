@@ -45,34 +45,34 @@
     <div class="row">  
     <div class="form-group col-md-6">
     <label for="jour-arrivee">Jour et heure d'arrivée</label>
-    <input type="text" value="<?php echo $troupe->date_arrivee; ?>" class="form-control" id="jour-arrivee">
+    <input type="text" name="arrival_day" value="<?php echo $troupe->date_arrivee; ?>" class="form-control" id="jour-arrivee">
   </div>
   
       <div class="form-group col-md-6">
     <label for="lieu-arrivee">Lieu d'arrivée</label>
-    <input type="text" value="<?php echo $troupe->lieu_arrivee; ?>" class="form-control" id="lieu-arrivee">
+    <input type="text" name="arrival_point" value="<?php echo $troupe->lieu_arrivee; ?>" class="form-control" id="lieu-arrivee">
         </div></div> 
         
         <div class="row">  
     <div class="form-group col-md-6">
     <label for="jour-depart">Jour et heure de départ</label>
-    <input type="text" value="<?php echo $troupe->date_depart; ?>" class="form-control" id="jour-depart">
+    <input type="text" name="departure_day" value="<?php echo $troupe->date_depart; ?>" class="form-control" id="jour-depart">
   </div>
   
       <div class="form-group col-md-6">
     <label for="lieu-depart">Lieu de départ</label>
-    <input type="text" value="<?php echo $troupe->lieu_depart; ?>" class="form-control" id="lieu-depart">
+    <input type="text" name="departure_point" value="<?php echo $troupe->lieu_depart; ?>" class="form-control" id="lieu-depart">
         </div></div> 
         
                           
           <div class="form-group">
     <label for="titre">Titre de la pièce</label>
-    <input type="text" value="<?php echo $troupe->titre_spectacle; ?>" class="form-control" id="titre">
+    <input type="text" name="title" value="<?php echo $troupe->titre_spectacle; ?>" class="form-control" id="titre">
   </div>   
 
    <div class="form-group">
     <label for="resume">Résumé</label>
-    <textarea class="form-control" id="resume" rows="3"><?php echo $troupe->resume; ?></textarea>
+    <textarea class="form-control" name="synopsis" id="resume" rows="3"><?php echo $troupe->resume; ?></textarea>
   </div>                                                   
   
   <button type="submit" class="btn btn-primary">Modifier</button>

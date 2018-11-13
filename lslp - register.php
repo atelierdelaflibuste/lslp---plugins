@@ -25,14 +25,20 @@ function team_page(){
         $troupe=$result[0];
         //var_dump($troupe);
         if(!empty($_POST)){
-            //var_dump($_POST);
+            // var_dump($_POST);
             extract($_POST);
             $query="
             UPDATE `troupes` SET 
             `nom_responsable`='$name',
             `email`='$email',
             `pays`='$country',
-            `ville`='$city'
+            `ville`='$city',
+            `lieu_arrivee`='$arrival_point',
+            `date_arrivee`='$arrival_day',
+            `lieu_depart`='$departure_point',
+            `date_depart`='$departure_day',
+            `titre_spectacle`='$title',
+            `resume`='$synopsis'
             WHERE `user_ID`='$user_ID'";
             //var_dump($query);
             $r=$wpdb->query($query);
@@ -55,7 +61,7 @@ function team_page(){
             INSERT INTO `troupes` 
             (`troupe_id`, `nom_responsable`, `email`, `telephone`, `nom_troupe`, `titre_spectacle`, `resume`, `pays`, `ville`, `lieu_arrivee`, `date_arrivee`, `lieu_depart`, `date_depart`,`user_ID`) 
             VALUES 
-            (NULL, '$name', '$email', '', 'ma troupe', 'mon spectacle', 'ceci est un résumé', '$country', '$city', '', '', '', '',$user_ID);";
+            (NULL, '$name', '$email', '', 'ma troupe', '$title', '$synopsis', '$country', '$city', '$arrival_point', '$arrival_day', '$departure_point', '$departure_day',$user_ID);";
             //var_dump($query);
             $r=$wpdb->query($query);
             if($r!=false) echo '<h1>Merci</h1><div class="notice notice-success"><p>Vous avez bien inscrit votre troupe de comédiens !</p></div>';
