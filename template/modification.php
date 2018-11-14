@@ -20,11 +20,17 @@
     <label for="responsable">Nom du responsable</label>
     <input type="text" name="name" value="<?php echo $troupe->nom_responsable; ?>" class="form-control" id="responsable">
   </div>
-  <div class="form-group">
+
+  <div class="row">
+  <div class="form-group col-md-6">
     <label for="email">Adresse e-mail</label>
     <input type="email" name="email" value="<?php echo $troupe->email; ?>"class="form-control" id="email" placeholder="name@example.com">
   </div>
      
+   <div class="form-group col-md-6">
+    <label for="telephone">Téléphone</label>
+    <input type="text" name="phone" value="<?php echo $troupe->telephone; ?>"class="form-control" id="telephone">
+  </div></div>
   <!--<div class="form-group">
     <label for="nombre-eleves">Nombre d'élèves</label>
     <input type="number" class="form-control" id="nombre-eleves">
