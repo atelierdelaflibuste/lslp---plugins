@@ -72,10 +72,104 @@ function team_page(){
     }
     
 }
-function register_menu(){
-    if(restrictly_get_current_user_role()=='admin_troupe') add_menu_page( 'Troupe', 'Troupe', 'read', 'team_page','team_page', 'dashicons-tickets', 7);
+
+function add_comedian_page(){
+    // echo '<h1>Ajout de comédien(s)</h1>';
+    global $wpdb;
+
+    $troupeid=get_user_troupeid();
+
+    if(!empty($_POST)) {
+        // var_dump($_POST);
+        // var_dump($troupeid);
+        extract($_POST);
+
+        $atelier="";
+        if(isset($grafikart)&&$grafikart=="on") $atelier.="arts graphiques";
+        if(isset($choreography)&&$choreography=="on") $atelier.=", chorégraphie";
+        if(isset($mask)&&$mask=="on") $atelier.=", masques";
+        if(isset($mime)&&$mime=="on") $atelier.=", mimes et improvisations";
+        if(isset($costume)&&$costume=="on") $atelier.=", costume";
+        
+        // var_dump($atelier);
+        $query="INSERT INTO `comediens` 
+        (`comedien_id`, `nom`, `prenom`, `date_naissance`, `sexe`, `taille_t_shirt`, `allergie_remarque`, `atelier`, `troupe_id`) 
+        VALUES 
+        (NULL, '$lastname', '$firstname', '$birthday', '$gender', '$size', '$remarks', '$atelier', '$troupeid');";
+
+        $r=$wpdb->query($query);
+        // var_dump($r);
+        if($r!=false) echo '<div class="notice notice-success"><p>Vous avez bien inscrit votre comédien(ne) !</p></div>';
+        else echo '<div class="notice notice-error"><p>Une erreur s\'est produite ! Merci de contacter l\'administrateur du site.</p></div>';
+    }
+    require_once 'template/comedien.html';
+
 }
 
+function edit_comedian_page(){
+    global $wpdb;  
+
+    $troupeid=get_user_troupeid();
+
+    // var_dump($_GET);
+    if(isset($_GET['a'])&&$_GET['a']=="del"){
+        $comedian_id=$_GET['id'];
+        
+        $query="DELETE FROM `comediens` WHERE `comedien_id`='$comedian_id' AND `troupe_id`='$troupeid'";
+        
+        $r=$wpdb->query($query);
+        if($r!=false) echo '<div class="notice notice-success"><p>Comédien(ne) correctement supprimmé(e) !</p></div>';
+        else echo '<div class="notice notice-error"><p>Une erreur s\'est produite ! Merci de contacter l\'administrateur du site.</p></div>';
+    }
+
+    $query="SELECT * FROM `comediens` WHERE `troupe_id`=$troupeid";
+    $result=$wpdb->get_results($query);
+    if(!empty($result)){
+        //var_dump($result);
+        ?>
+        <style>
+        #comedian_table td{border-bottom:solid 1px;padding:10px}
+        </style>
+        <table id="comedian_table" style="border-collapse: collapse;">
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>date de naissance</th>
+                <th>sexe</th>
+                <th>taille de t-shirt</th>
+                <th>allergie(s) ou commentaires</th>
+                <th>atelier(s)</th>
+                <th>action</th>
+            </tr>
+        <?php
+        foreach($result as $comedian){
+            echo '<tr>';
+            echo '<td>'.$comedian->nom.'</td>';
+            echo '<td>'.$comedian->prenom.'</td>';
+            echo '<td>'.$comedian->date_naissance.'</td>';
+            $sexe="M";
+            if($comedian->sexe=="f") $sexe="F";
+            echo '<td>'.$sexe.'</td>';
+            echo '<td>'.$comedian->taille_t_shirt.'</td>';
+            echo '<td>'.$comedian->allergie_remarque.'</td>';
+            echo '<td>'.$comedian->atelier.'</td>';
+            echo '<td><a href="?page=edit_comedian&a=del&id='.$comedian->comedien_id.'">supprimer</a></td>';
+            echo '</tr>';
+        }
+        ?>
+        </table>
+        <?php
+    }
+    else echo 'Il n\'y a pas encore de comédie(nes) dans votre troupe';
+}
+
+function register_menu(){
+    if(restrictly_get_current_user_role()=='admin_troupe') {
+        add_menu_page( 'Troupe', 'Troupe', 'read', 'team_page','team_page', 'dashicons-tickets', 7);
+        add_submenu_page('team_page','Ajout de comédiens','Ajout de comédiens','read','add_comedian','add_comedian_page');
+        add_submenu_page('team_page','Edition de comédiens','Edition de comédiens','read','edit_comedian','edit_comedian_page');
+    }
+}
 function plugin_debug(){
 
     // $role=get_role('admin_troupe');
@@ -116,7 +210,23 @@ function register_plugin_activate(){
     global $wpdb;
 
     $result=$wpdb->query($query);
-
+    
+    $query="
+    CREATE TABLE IF NOT EXISTS `comediens` (
+      `comedien_id` int(11) NOT NULL AUTO_INCREMENT,
+      `nom` text NOT NULL,
+      `prenom` text NOT NULL,
+      `date_naissance` text NOT NULL,
+      `sexe` varchar(1) NOT NULL,
+      `taille_t_shirt` varchar(3) NOT NULL,
+      `allergie_remarque` text NOT NULL,
+      `atelier` text NOT NULL,
+      `troupe_id` int(11) NOT NULL,
+      PRIMARY KEY (`comedien_id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+    ";
+    
+    $result=$wpdb->query($query);
 }
 
 function register_plugin_deactivate(){

@@ -10,6 +10,20 @@ function restrictly_get_current_user_role() {//https://catapultthemes.com/get-cu
     }
 }
 
+function get_user_troupeid(){
+    global $wpdb;
+
+    $user_datas=wp_get_current_user();
+    $user_ID=$user_datas->data->ID;
+
+    $query="SELECT * FROM troupes WHERE user_ID='".$user_ID."';";
+    $result=$wpdb->get_results($query);
+    // var_dump($result);
+
+    if(!empty($result)) return $result[0]->troupe_id;
+    else return false;
+}
+
 add_action('wp_head', 'bootstrap');
 function bootstrap(){
   ?>
