@@ -78,7 +78,7 @@ function add_comedian_page(){
     global $wpdb;
 
     $troupeid=get_user_troupeid();
-
+    // var_dump($troupeid);
     if(!empty($_POST)) {
         // var_dump($_POST);
         // var_dump($troupeid);
@@ -102,7 +102,8 @@ function add_comedian_page(){
         if($r!=false) echo '<div class="notice notice-success"><p>Vous avez bien inscrit votre comédien(ne) !</p></div>';
         else echo '<div class="notice notice-error"><p>Une erreur s\'est produite ! Merci de contacter l\'administrateur du site.</p></div>';
     }
-    require_once 'template/comedien.html';
+    if($troupeid) include_once 'template/comedien.html';
+    else echo '<div class="notice notice-error"><p>Vous devez inscrire votre troupe avant de pouvoir ajouter des comédiens !</p></div>';
 
 }
 
@@ -122,6 +123,36 @@ function edit_comedian_page(){
         else echo '<div class="notice notice-error"><p>Une erreur s\'est produite ! Merci de contacter l\'administrateur du site.</p></div>';
     }
 
+    if(isset($_GET['a'])&&$_GET['a']=="edit"){
+        if(isset($_GET['id'])) $comedian_id=$_GET['id'];
+
+        if(isset($_POST['submit'])){
+            // var_dump($_POST);
+            extract($_POST);
+
+            $query="UPDATE `comediens` SET 
+            `nom`='$lastname',
+            `prenom`='$firstname',
+            `date_naissance`='$birthday',
+            `taille_t_shirt`='$size',
+            `sexe`='$gender',
+            `allergie_remarque`='$remarks'
+            WHERE `comedien_id`='$comedian_id'";
+            // var_dump($query);
+            $r=$wpdb->query($query);
+            //var_dump($r);
+            if($r!=false) echo '<div class="notice notice-success"><p>Votre comédien(ne) a bien été mise à jour !</p></div>';
+            else echo '<div class="notice notice-error"><p>Vous n\'avez modifié aucune donnée ou une erreur s\'est produite ! Merci de contacter l\'administrateur du site.</p></div>';
+        }
+        else{
+            $query="SELECT * FROM `comediens` WHERE `comedien_id`='$comedian_id'";
+            $comedien=$wpdb->get_results($query);
+    
+            include_once 'template/edit_comedien.php';
+        }
+
+    }
+
     $query="SELECT * FROM `comediens` WHERE `troupe_id`=$troupeid";
     $result=$wpdb->get_results($query);
     if(!empty($result)){
@@ -139,7 +170,7 @@ function edit_comedian_page(){
                 <th>taille de t-shirt</th>
                 <th>allergie(s) ou commentaires</th>
                 <th>atelier(s)</th>
-                <th>action</th>
+                <th>actions</th>
             </tr>
         <?php
         foreach($result as $comedian){
@@ -153,7 +184,7 @@ function edit_comedian_page(){
             echo '<td>'.$comedian->taille_t_shirt.'</td>';
             echo '<td>'.$comedian->allergie_remarque.'</td>';
             echo '<td>'.$comedian->atelier.'</td>';
-            echo '<td><a href="?page=edit_comedian&a=del&id='.$comedian->comedien_id.'">supprimer</a></td>';
+            echo '<td><a href="?page=edit_comedian&a=edit&id='.$comedian->comedien_id.'">editer</a> <a href="?page=edit_comedian&a=del&id='.$comedian->comedien_id.'">supprimer</a></td>';
             echo '</tr>';
         }
         ?>
@@ -227,16 +258,29 @@ function register_plugin_activate(){
     ";
     
     $result=$wpdb->query($query);
+    add_register_page();
 }
 
 function register_plugin_deactivate(){
     remove_role('admin_troupe');
+    delete_register_page();
+
 }
 
 add_action('admin_notices','plugin_debug');
 add_action('wp','plugin_debug');
 
 add_action( 'admin_menu', 'register_menu' );
+
+add_filter("page_template", "replace_template_register");
+function replace_template_register($page_template)
+{
+    if(is_page('Enregistrez votre famille')){
+        $page_template = plugin_dir_path(__FILE__) . 'template/famille.php';
+        return $page_template;
+    }
+    return $page_template;
+}
 
 register_activation_hook(__FILE__, 'register_plugin_activate');
 register_deactivation_hook(__FILE__, 'register_plugin_deactivate');
